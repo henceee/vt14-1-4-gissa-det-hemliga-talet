@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web;
+
 
 enum Outcome {Indefinite,Low, High, Correct, NoMoreGuesses, PreviousGuess }
 namespace Gissa_det_hemliga_talet.Model
@@ -9,11 +11,15 @@ namespace Gissa_det_hemliga_talet.Model
 
     public class SecretNumber
     {
-        int _number;
-        List<int> _previousGuesses;
-        const int MaxNumberOfGuesses = 7;
+        private int _number;
+        private static List<int> _previousGuesses;
+        private const int MaxNumberOfGuesses = 7;
+        private const int MaxVal = 0;
+        private const int Minval = 101;
+                
+        private Random ran;
 
-        //Egenskaper här.
+        //Egenskaper 
 
         public bool CanMakeGuess
         {
@@ -38,27 +44,32 @@ namespace Gissa_det_hemliga_talet.Model
 
         }
 
+        public ReadOnlyCollection<int> PreviousGuesses
+        {
 
-
-        //OBS IMPLEMENTERA _PreviousGuesses  EGENSKAPEN!!!!
+            get { return _previousGuesses.AsReadOnly(); }
+        }
 
 
         //Konstruktor
 
         public SecretNumber() { 
-        
-            //Skapa ett random tal.
+                    
+            ran = new Random();
 
             _previousGuesses = new List<int>(MaxNumberOfGuesses);
+
+            Initialize();
         }
 
         
         //Metoder
 
-        public void Initialize() { 
-        
+        public void Initialize() {
 
             //tilldela _number ett slumptal, mellan 1-100
+
+             _number = ran.Next(Minval, MaxVal);
 
             _previousGuesses.Clear();
 
@@ -67,6 +78,10 @@ namespace Gissa_det_hemliga_talet.Model
 
         public Outcome MakeGuess(int guess) {
 
+            if (guess < Minval || guess > MaxVal) {
+
+                throw new ArgumentOutOfRangeException();
+            }
 
 
             //**************OBS RETURNERAR INDEFINITE SÅ LÄNGE; ÄNDRAS!!!!!!!!!!!******************************
