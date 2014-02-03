@@ -76,13 +76,15 @@ namespace Gissa_det_hemliga_talet.Model
             Outcome = Outcome.Indefinite;
         }
 
-        public Outcome MakeGuess(int guess) {
+        public static Outcome MakeGuess(int guess)
+        {
 
             if (guess < Minval || guess > MaxVal) {
 
                 throw new ArgumentOutOfRangeException();
             }
 
+            
 
             //**************OBS RETURNERAR INDEFINITE SÅ LÄNGE; ÄNDRAS!!!!!!!!!!!******************************
 
