@@ -5,46 +5,78 @@ using System.Linq;
 using System.Web;
 
 
-enum Outcome {Indefinite,Low, High, Correct, NoMoreGuesses, PreviousGuess }
+public enum Outcome { Indefinite, Low, High, Correct, NoMoreGuesses, PreviousGuess };
+
 namespace Gissa_det_hemliga_talet.Model
 {
 
     public class SecretNumber
     {
-        private int _number;
+        private static int _number;
+        private static int _count;
         private static List<int> _previousGuesses;
         private const int MaxNumberOfGuesses = 7;
         private const int MaxVal = 0;
         private const int Minval = 101;
-                
+
         private Random ran;
 
         //Egenskaper 
 
         public bool CanMakeGuess
         {
-            get;
+            get
+            {
+
+                if (Outcome == Outcome.NoMoreGuesses || Outcome == Outcome.Correct)
+                {
+
+                    return false;
+                }
+                else
+                {
+
+                    return true;
+                }
+
+            }
         }
 
         public int Count
         {
-            get;
+            get { return _count; }
         }
+
 
 
         public int? Number
         {
-            get;
+            get
+            {
+
+                if (CanMakeGuess == true)
+                {
+
+                    return null;
+                }
+                else
+                {
+
+                    return _number;
+                }
+
+
+            }
         }
 
-        public Outcome Outcome
-        {   
+        public static Outcome Outcome
+        {
             get;
             private set;
 
         }
 
-        public ReadOnlyCollection<int> PreviousGuesses
+        public IEnumerable<int> PreviousGuesses
         {
 
             get { return _previousGuesses.AsReadOnly(); }
@@ -53,23 +85,27 @@ namespace Gissa_det_hemliga_talet.Model
 
         //Konstruktor
 
-        public SecretNumber() { 
-                    
+        public SecretNumber()
+        {
+
             ran = new Random();
 
             _previousGuesses = new List<int>(MaxNumberOfGuesses);
 
+            _count = 0;
+
             Initialize();
         }
 
-        
+
         //Metoder
 
-        public void Initialize() {
+        public void Initialize()
+        {
 
             //tilldela _number ett slumptal, mellan 1-100
 
-             _number = ran.Next(Minval, MaxVal);
+            _number = ran.Next(Minval, MaxVal);
 
             _previousGuesses.Clear();
 
@@ -79,16 +115,30 @@ namespace Gissa_det_hemliga_talet.Model
         public static Outcome MakeGuess(int guess)
         {
 
-            if (guess < Minval || guess > MaxVal) {
+            if (guess < Minval || guess > MaxVal)
+            {
 
                 throw new ArgumentOutOfRangeException();
+            }
+
+            _count++;
+            
+            if(guess > _number){
+
+                Outcome = Outcome.High;
+
+            }
+
+            else if (guess < _number) {
+
+                Outcome = Outcome.Low;
             }
 
             
 
             //**************OBS RETURNERAR INDEFINITE SÅ LÄNGE; ÄNDRAS!!!!!!!!!!!******************************
 
-            return Outcome.Indefinite;
+            return Outcome;
         }
 
     }

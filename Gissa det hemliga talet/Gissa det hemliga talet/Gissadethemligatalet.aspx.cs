@@ -10,13 +10,13 @@ namespace Gissa_det_hemliga_talet
 {
     public partial class Gissa_det_hemliga_talet : System.Web.UI.Page
     {
-        private SecretNumber? SecretNumber {
+    //    private SecretNumber PrevGuess
+    //    {
 
-            get { return Session["SecretNumber"] as SecretNumber; }
-            set { Session["SecretNumber"] = value; }
-                       
-        
-        }
+    //        get { return Session["SecretNumber"] as SecretNumber; }
+    //        set { Session["SecretNumber"] = value; }
+
+    //    }
         
 
         protected void Page_Load(object sender, EventArgs e)
@@ -26,16 +26,23 @@ namespace Gissa_det_hemliga_talet
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            if (!SecretNumber.HasValue) {
+            //if (!PrevGuess.HasValue)
+            //{
 
-                SecretNumber secret = new SecretNumber();
+            //    PrevGuess = new SecretNumber();
+            //}
 
-            }
+            //else
+            //{
+            //    if (PrevGuess.Value.CanMakeGuess == false)
+            //    {
 
-            else {
 
-                Model.SecretNumber.MakeGuess(int.Parse(Guess.Text));
-            }           
+
+            //    }
+
+            //    Model.SecretNumber.MakeGuess(int.Parse(Guess.Text));
+            //}           
             
         }
 

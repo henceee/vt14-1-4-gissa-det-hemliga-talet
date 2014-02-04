@@ -21,10 +21,10 @@
     <asp:TextBox ID="Guess" runat="server"></asp:TextBox>    
     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" ControlToValidate="Guess" runat="server" Text="*" ErrorMessage="Ange ett tal mellan 1-100" Display="Dynamic" CssClass="Red"></asp:RequiredFieldValidator>
     <asp:RangeValidator ID="RangeValidator1" ControlToValidate="Guess" runat="server" Text="*" ErrorMessage="Ange ett tal mellan 1-100" Display="Dynamic" MaximumValue="100" MinimumValue="1" CssClass="Red"></asp:RangeValidator>
-    <asp:Button ID="Button1" runat="server" Text="Skicka Gissning" OnClick="Button1_Click" />
+    <asp:Button ID="Skicka" runat="server" Text="Skicka Gissning" OnClick="Button1_Click" />
     <br />
     <br />
-    <asp:Button ID="Button2" runat="server" Text="Slumpa ett nytt tal" Visible="false" />
+    <asp:Button ID="Slumpa" runat="server" Text="Slumpa ett nytt tal" Visible="false" />
     </div>
     </form>
 </body>

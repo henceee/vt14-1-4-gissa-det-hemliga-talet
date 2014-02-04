@@ -59,7 +59,9 @@
   <ItemGroup>
     <Content Include="Css\StyleSheet.css" />
     <Content Include="Gissadethemligatalet.aspx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Gissadethemligatalet.aspx.cs">
