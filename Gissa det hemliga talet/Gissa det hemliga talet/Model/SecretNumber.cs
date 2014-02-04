@@ -16,8 +16,8 @@ namespace Gissa_det_hemliga_talet.Model
         private static int _count;
         private static List<int> _previousGuesses;
         private const int MaxNumberOfGuesses = 7;
-        private const int MaxVal = 0;
-        private const int Minval = 101;
+        private const int MinVal = 0;
+        private const int MaxVal = 101;
 
         private Random ran;
 
@@ -105,23 +105,33 @@ namespace Gissa_det_hemliga_talet.Model
 
             //tilldela _number ett slumptal, mellan 1-100
 
-            _number = ran.Next(Minval, MaxVal);
+            _number = ran.Next(MinVal, MaxVal);
 
             _previousGuesses.Clear();
 
             Outcome = Outcome.Indefinite;
         }
 
-        public static Outcome MakeGuess(int guess)
+
+        public Outcome MakeGuess(int guess)
         {
 
-            if (guess < Minval || guess > MaxVal)
-            {
+            for (int i = 0; i > _previousGuesses.Count; i++) {
 
-                throw new ArgumentOutOfRangeException();
+                    if (_previousGuesses[i] == guess) {
+
+                        Outcome = Outcome.PreviousGuess;
+                
+                    }
             }
 
-            _count++;
+                if (guess < MinVal || guess > MaxVal)
+                {
+
+                    throw new ArgumentOutOfRangeException();
+                }
+
+           
             
             if(guess > _number){
 
@@ -129,15 +139,20 @@ namespace Gissa_det_hemliga_talet.Model
 
             }
 
-            else if (guess < _number) {
+            else if (guess < _number)
+            {
 
                 Outcome = Outcome.Low;
             }
 
-            
 
-            //**************OBS RETURNERAR INDEFINITE SÅ LÄNGE; ÄNDRAS!!!!!!!!!!!******************************
+            else {
 
+                Outcome = Outcome.Correct;
+
+            }
+
+            _count++;
             return Outcome;
         }
 

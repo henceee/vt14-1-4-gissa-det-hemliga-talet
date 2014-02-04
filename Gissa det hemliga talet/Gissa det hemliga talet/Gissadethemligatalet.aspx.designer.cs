@@ -67,21 +67,21 @@ namespace Gissa_det_hemliga_talet {
         protected global::System.Web.UI.WebControls.RangeValidator RangeValidator1;
         
         /// <summary>
-        /// Skicka control.
+        /// Send control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Skicka;
+        protected global::System.Web.UI.WebControls.Button Send;
         
         /// <summary>
-        /// Slumpa control.
+        /// Randomize control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Slumpa;
+        protected global::System.Web.UI.WebControls.Button Randomize;
     }
 }

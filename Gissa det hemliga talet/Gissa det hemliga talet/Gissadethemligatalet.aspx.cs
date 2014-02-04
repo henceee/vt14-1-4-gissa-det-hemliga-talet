@@ -10,13 +10,15 @@ namespace Gissa_det_hemliga_talet
 {
     public partial class Gissa_det_hemliga_talet : System.Web.UI.Page
     {
-    //    private SecretNumber PrevGuess
-    //    {
+        SecretNumber sec;
 
-    //        get { return Session["SecretNumber"] as SecretNumber; }
-    //        set { Session["SecretNumber"] = value; }
+        private SecretNumber PrevGuess
+        {
 
-    //    }
+            get { return Session["SecretNumber"] as SecretNumber; }
+            set { Session["SecretNumber"] = value; }
+
+        }
         
 
         protected void Page_Load(object sender, EventArgs e)
@@ -26,23 +28,34 @@ namespace Gissa_det_hemliga_talet
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            //if (!PrevGuess.HasValue)
-            //{
+            //Skapar en ny sessionsnyckel om PrevGuess inte har ngt värde.
+            
+            if (PrevGuess == null)
+            {
+                sec = new SecretNumber();
 
-            //    PrevGuess = new SecretNumber();
-            //}
+                PrevGuess = sec;
+            }
 
-            //else
-            //{
-            //    if (PrevGuess.Value.CanMakeGuess == false)
-            //    {
+            
+                //Om inga fler gissningar går att göras sätts enabled false på Skicka-knappen
+                //Knappen med texten "Slumpa ett nytt tal" visas.
 
+                if (PrevGuess.CanMakeGuess == false)
+                {
+                    Send.Enabled = false;
+                    Guess.Enabled = false;
+                    Randomize.Visible = true;
 
+                }
+                else
+                {
+                    sec.MakeGuess(int.Parse(Guess.Text));        
 
-            //    }
+                }
 
-            //    Model.SecretNumber.MakeGuess(int.Parse(Guess.Text));
-            //}           
+                PrevGuess = sec;
+                     
             
         }
 
