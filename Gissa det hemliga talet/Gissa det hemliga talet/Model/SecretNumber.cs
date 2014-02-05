@@ -28,11 +28,15 @@ namespace Gissa_det_hemliga_talet.Model
             get
             {
 
-                if (Outcome == Outcome.NoMoreGuesses || Outcome == Outcome.Correct)
+                if (Outcome == Outcome.Correct || Outcome == Outcome.NoMoreGuesses)
                 {
 
                     return false;
                 }
+                //else if (Outcome == Outcome.NoMoreGuesses) {
+
+                //    return false;
+                //}
                 else
                 {
 
@@ -69,7 +73,7 @@ namespace Gissa_det_hemliga_talet.Model
             }
         }
 
-        public static Outcome Outcome
+        public Outcome Outcome
         {
             get;
             private set;
@@ -116,43 +120,64 @@ namespace Gissa_det_hemliga_talet.Model
         public Outcome MakeGuess(int guess)
         {
 
-            for (int i = 0; i > _previousGuesses.Count; i++) {
 
-                    if (_previousGuesses[i] == guess) {
-
-                        Outcome = Outcome.PreviousGuess;
-                
-                    }
-            }
-
-                if (guess < MinVal || guess > MaxVal)
-                {
-
-                    throw new ArgumentOutOfRangeException();
-                }
-
-           
-            
-            if(guess > _number){
-
-                Outcome = Outcome.High;
-
-            }
-
-            else if (guess < _number)
+            if (guess < MinVal || guess > MaxVal-1)
             {
 
-                Outcome = Outcome.Low;
+                throw new ArgumentOutOfRangeException();
             }
 
+            bool previousguess = false;
 
-            else {
+            for (int i = 0; i < _previousGuesses.Count; i++)
+            {
 
-                Outcome = Outcome.Correct;
+                if (_previousGuesses[i] == guess)
+                {
 
+                    Outcome = Outcome.PreviousGuess;
+
+                    previousguess = true;
+
+                }
             }
 
-            _count++;
+            if (!previousguess)
+            {
+
+                if (guess > _number)
+                {
+
+                    Outcome = Outcome.High;
+
+                }
+
+                else if (guess < _number)
+                {
+
+                    Outcome = Outcome.Low;
+                }
+
+
+                else
+                {
+
+                    Outcome = Outcome.Correct;
+
+                }
+
+                _count++;
+                _previousGuesses.Add(guess);
+            }
+
+            if (Count == MaxNumberOfGuesses && guess != _number)
+            {
+
+                Outcome = Outcome.NoMoreGuesses;
+
+            }
+                                    
+
             return Outcome;
         }
 
