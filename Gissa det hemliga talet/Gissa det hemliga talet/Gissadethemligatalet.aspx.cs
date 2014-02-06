@@ -12,102 +12,66 @@ namespace Gissa_det_hemliga_talet
     {
         SecretNumber sec;
 
-        private SecretNumber PrevGuess
+        private SecretNumber SecretNumber
         {
 
-            get { return Session["SecretNumber"] as SecretNumber; }
-            set { Session["SecretNumber"] = value; }
-
+            get { return Session["SecretNumber"] as SecretNumber ?? (SecretNumber)(Session["SecretNumber"] = new SecretNumber()); }
         }
-        
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
-           
-
-           
         }
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            if (PrevGuess == null)
+            if (IsValid)
             {
-                sec = new SecretNumber();
-
-                PrevGuess = sec;
-            }
-           
-            
                 //Om inga fler gissningar går att göras sätts enabled false på Skicka-knappen
                 //Knappen med texten "Slumpa ett nytt tal" visas.
 
-                              
-                    PrevGuess.MakeGuess(int.Parse(Guess.Text));
+                SecretNumber.MakeGuess(int.Parse(Guess.Text));
 
-                    
-                    Result.Visible = true;
+                if (!SecretNumber.CanMakeGuess)
+                {
+                    Send.Enabled = false;
+                    Guess.Enabled = false;
+                    Randomize.Visible = true;
 
-                    if (PrevGuess.CanMakeGuess == false)
+                    Randomize.Focus();
+
+                    if (SecretNumber.Outcome == Outcome.Correct)
                     {
-                        Send.Enabled = false;
-                        Guess.Enabled = false;
-                        Randomize.Visible = true;
-
-                        Randomize.Focus();
-
-                            if (PrevGuess.Outcome == Outcome.Correct) {
-
-                                AccuracyLiteral.Text = string.Format(AccuracyLiteral.Text, "Grattis du klarade det på ", PrevGuess.Count + " försök!");
-                                
-                            }
-
-                            else if (PrevGuess.Outcome == Outcome.NoMoreGuesses) {
-
-                                AccuracyLiteral.Text = string.Format(AccuracyLiteral.Text, "Du har inga gissningar kvar. Det hemliga talet var ", PrevGuess.Number + ".");
-                            }
-
+                        AccuracyLiteral.Text = string.Format(AccuracyLiteral.Text, "Grattis du klarade det på ", SecretNumber.Count + " försök!");
                     }
-
-                    else if (PrevGuess.Outcome == Outcome.High) {
-
-                        AccuracyLiteral.Text = string.Format(AccuracyLiteral.Text, "För ", "högt!");
-                    
+                    else if (SecretNumber.Outcome == Outcome.NoMoreGuesses)
+                    {
+                        AccuracyLiteral.Text = string.Format(AccuracyLiteral.Text, "Du har inga gissningar kvar. Det hemliga talet var ", SecretNumber.Number + ".");
                     }
+                }
+                else if (SecretNumber.Outcome == Outcome.High)
+                {
+                    AccuracyLiteral.Text = string.Format(AccuracyLiteral.Text, "För ", "högt!");
+                }
+                else if (SecretNumber.Outcome == Outcome.Low)
+                {
+                    AccuracyLiteral.Text = string.Format(AccuracyLiteral.Text, "För ", "lågt!");
+                }
+                else if (SecretNumber.Outcome == Outcome.PreviousGuess)
+                {
+                    AccuracyLiteral.Text = string.Format(AccuracyLiteral.Text, "Du har redan ", "gissat på det talet.");
+                }
 
-                    else if (PrevGuess.Outcome == Outcome.Low) {
+                string joinedlist = string.Join(",", SecretNumber.PreviousGuesses);
+                PrevguessLiteral.Text = string.Format(PrevguessLiteral.Text, joinedlist);
 
-                        AccuracyLiteral.Text = string.Format(AccuracyLiteral.Text, "För ", "lågt!");
-                    
-                    }
-
-                    else if (PrevGuess.Outcome == Outcome.PreviousGuess) {
-
-                        AccuracyLiteral.Text = string.Format(AccuracyLiteral.Text, "Du har redan ", "gissat på det talet.");
-                    }
-
-
-                    string joinedlist = string.Join(",", PrevGuess.PreviousGuesses.ToArray());        
-
-                    PrevguessLiteral.Text = string.Format(PrevguessLiteral.Text, joinedlist);
-
-                    PrevGuess = PrevGuess;
-                     
-            
+                Result.Visible = true;
+            }
         }
 
         protected void Randomize_Click(object sender, EventArgs e)
         {
-            sec = new SecretNumber();
-
-            PrevGuess = sec;
-
-            
+            SecretNumber.Initialize();
         }
-
-       
-
-        
-
-        
     }
 }

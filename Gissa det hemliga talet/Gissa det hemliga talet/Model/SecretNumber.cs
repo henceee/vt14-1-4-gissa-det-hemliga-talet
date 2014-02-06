@@ -13,11 +13,10 @@ namespace Gissa_det_hemliga_talet.Model
     public class SecretNumber
     {
         private static int _number;
-        private static int _count;
         private static List<int> _previousGuesses;
         private const int MaxNumberOfGuesses = 7;
         private const int MinVal = 0;
-        private const int MaxVal = 101;
+        private const int MaxVal = 100;
 
         private Random ran;
 
@@ -27,28 +26,13 @@ namespace Gissa_det_hemliga_talet.Model
         {
             get
             {
-
-                if (Outcome == Outcome.Correct || Outcome == Outcome.NoMoreGuesses)
-                {
-
-                    return false;
-                }
-                //else if (Outcome == Outcome.NoMoreGuesses) {
-
-                //    return false;
-                //}
-                else
-                {
-
-                    return true;
-                }
-
+                return Count < MaxNumberOfGuesses && !_previousGuesses.Contains(_number);
             }
         }
 
         public int Count
         {
-            get { return _count; }
+            get { return _previousGuesses.Count; }
         }
 
 
@@ -58,7 +42,7 @@ namespace Gissa_det_hemliga_talet.Model
             get
             {
 
-                if (CanMakeGuess == true)
+                if (CanMakeGuess)
                 {
 
                     return null;
@@ -96,8 +80,6 @@ namespace Gissa_det_hemliga_talet.Model
 
             _previousGuesses = new List<int>(MaxNumberOfGuesses);
 
-            _count = 0;
-
             Initialize();
         }
 
@@ -109,7 +91,7 @@ namespace Gissa_det_hemliga_talet.Model
 
             //tilldela _number ett slumptal, mellan 1-100
 
-            _number = ran.Next(MinVal, MaxVal);
+            _number = ran.Next(MinVal, MaxVal + 1);
 
             _previousGuesses.Clear();
 
@@ -119,64 +101,39 @@ namespace Gissa_det_hemliga_talet.Model
 
         public Outcome MakeGuess(int guess)
         {
+            if (!CanMakeGuess)
+            {
+                Outcome = Outcome.NoMoreGuesses;
+                return Outcome;
+            }
 
-
-            if (guess < MinVal || guess > MaxVal-1)
+            if (guess < MinVal || guess > MaxVal)
             {
 
                 throw new ArgumentOutOfRangeException();
             }
 
-            bool previousguess = false;
-
-            for (int i = 0; i < _previousGuesses.Count; i++)
+            if (_previousGuesses.Contains(guess))
             {
-
-                if (_previousGuesses[i] == guess)
-                {
-
-                    Outcome = Outcome.PreviousGuess;
-
-                    previousguess = true;
-
-                }
+                Outcome = Outcome.PreviousGuess;
             }
-
-            if (!previousguess)
+            else
             {
+                _previousGuesses.Add(guess);
 
                 if (guess > _number)
                 {
-
                     Outcome = Outcome.High;
-
                 }
-
                 else if (guess < _number)
                 {
-
                     Outcome = Outcome.Low;
                 }
-
-
                 else
                 {
-
                     Outcome = Outcome.Correct;
-
                 }
-
-                _count++;
-                _previousGuesses.Add(guess);
             }
-
-            if (Count == MaxNumberOfGuesses && guess != _number)
-            {
-
-                Outcome = Outcome.NoMoreGuesses;
-
-            }
-                                    
 
             return Outcome;
         }

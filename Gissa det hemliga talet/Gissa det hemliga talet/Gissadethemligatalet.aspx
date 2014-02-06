@@ -23,14 +23,12 @@
     <asp:rangevalidator id="rangevalidator1" controltovalidate="guess" runat="server" text="*" errormessage="Ange ett tal mellan 1-100" display="dynamic" maximumvalue="100" minimumvalue="1" type="integer" cssclass="red"></asp:rangevalidator>
     <asp:Button ID="Send" runat="server" Text="Skicka Gissning" OnClick="Button1_Click" />
     
-    <asp:PlaceHolder ID="Result" runat="server" Visible="false">
-        <asp:Panel ID="guesses" runat="server">
-        <p><asp:Literal ID="PrevguessLiteral" runat="server">{0}</asp:Literal>  </p>
-        </asp:Panel>       
+    <asp:PlaceHolder ID="Result" runat="server" Visible="false">        
+        <p><asp:Literal ID="PrevguessLiteral" runat="server">{0}</asp:Literal>  </p> 
         <p><asp:Literal ID="AccuracyLiteral" runat="server">{0}{1}</asp:Literal>  </p>    
        
     </asp:PlaceHolder>    
-    <asp:Button ID="Randomize" runat="server" Text="Slumpa ett nytt tal" Visible="false" OnClick="Randomize_Click" />
+    <asp:Button ID="Randomize" runat="server" Text="Slumpa ett nytt tal" Visible="false" OnClick="Randomize_Click" CausesValidation="False" />
     </div>
     </form>
 </body>
